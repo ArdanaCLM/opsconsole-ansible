@@ -42,12 +42,10 @@
 # install wsgi Apache module
 - name: OPS-WEB | install | Install dependencies
   sudo: yes
-  apt:
+  package:
     state: latest
     name: "{{ item }}"
-  with_items:
-    - libapache2-mod-wsgi
-    - python-httplib2 # Used by Ansible URI modual
+  with_items: ops_console_packages
 
 - name: Enable wsgi module in apache
   command: a2enmod wsgi
@@ -70,14 +68,6 @@
 - name: OPS-WEB | install | Install dependencies (mysql-client)
   become: yes
   include: "{{ playbook_dir }}/roles/FND-MDB/tasks/install_client.yml"
-
-- name: OPS-WEB | install | Install dependencies (python-mysqldb)
-  become: yes
-  apt:
-    state: latest
-    name: "{{ item }}"
-  with_items:
-    - python-mysqldb     # needed by create_db.yml
 
 - name: OPS-WEB | install | Create Virtual Host Error Logging File
   file:
