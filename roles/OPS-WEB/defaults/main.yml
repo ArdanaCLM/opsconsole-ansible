@@ -55,6 +55,7 @@ tenant_console_vip_url: "{% if HZN_WEB is defined -%}
                          {%- endif %}"
 
 # Database configuration
+ops_console_schema_path: "{{'{{ ops_console_site_packages }}/bll/schema.sql' if deployer_media_legacy_layout|bool else '/usr/share/ardana-opsconsole-server/schema.sql'}}"
 ops_console_schema_path: "{{ ops_console_site_packages }}/bll/schema.sql"
 ca_file: "/etc/ssl/certs/ca-certificates.crt"
 

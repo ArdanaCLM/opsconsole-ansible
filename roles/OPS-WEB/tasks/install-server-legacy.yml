@@ -17,33 +17,55 @@
 ---
 # Tasks
 
-# install wsgi Apache module
-- name: OPS-WEB | install | Install dependencies
-  sudo: yes
-  package:
-    state: latest
-    name: "{{ item }}"
-  with_items: ops_console_packages
-
-- name: Enable wsgi module in apache
-  command: a2enmod wsgi
-  register: ops_console_mod_enable_result
-  changed_when: '"already enabled" not in ops_console_mod_enable_result.stdout'
-
-- name: OPS-WEB | install | install the Ops Console service (legacy)
-  include: install-server-legacy.yml
-  when: deployer_media_legacy_layout|bool
-
-- name: OPS-WEB | install | install the Ops Console service (rpm)
-  zypper:
-    name: python-ardana-opsconsole-server
+- name: OPS-WEB | install | Create BLL Group
+  group:
+    name: "{{ ops_console_os_group }}"
     state: present
-  when: deployer_media_legacy_layout|bool == false
 
-# install mysql-client
-- name: OPS-WEB | install | Install dependencies (mysql-client)
+- name: OPS-WEB | install | Create BLL User
+  user:
+    name: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_os_group }}"
+    createhome: yes
+    shell: /usr/sbin/nologin
+    state: present
+  ignore_errors: yes
+
+- name: OPS-WEB | install | Create logging directory
+  file:
+    path: "{{ ops_console_log_dir }}"
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_os_group }}"
+    mode: 0775
+    state: directory
+
+- name: OPS-WEB | install | Update venv cache
   become: yes
-  include: "{{ playbook_dir }}/roles/FND-MDB/tasks/install_client.yml"
+  install_package:
+    cache: update
+
+- name: OPS-WEB | install | install the Ops Console service
+  install_package:
+    name: opsconsole-server
+    service: ops-console-web
+    state: present
+  register: ardana_notify_opsweb_reload_required
+
+- name: OPS-WEB | install | Create Virtual Host Error Logging File
+  file:
+    path: "{{ ops_console_error_log }}"
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_centralized_log_group }}"
+    mode: 0640
+    state: touch
+
+- name: OPS-WEB | install | Create Virtual Host Access Log File
+  file:
+    path: "{{ ops_console_access_log }}"
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_centralized_log_group }}"
+    mode: 0640
+    state: touch
 
 - name: OPS-WEB | install | Install Transient Web Artifact Project
   install_package:
@@ -88,6 +110,7 @@
     group: root
     mode: 0775
     state: directory
+
 
 - name: OPS-WEB | install | Create WSGI directory
   file:
