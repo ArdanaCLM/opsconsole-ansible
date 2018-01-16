@@ -19,7 +19,6 @@
 from bll.hooks import RestHook
 import os
 
-# but can be empty string ('') if no proxy needed
 http_proxy = ''
 https_proxy = http_proxy
 no_proxy = 'localhost,127.0.0.1'
@@ -76,7 +75,7 @@ logging = {
 
 keystone = {
     'private_url': '{{ keystone_private_url }}',
-    'cacert': '/etc/ssl/cos/cacert.pem',
+    'cacert': '/etc/ssl/certs/ca-certificates.crt',
     'service_tenant': '{{ keystone_service_tenant }}',
 }
 
