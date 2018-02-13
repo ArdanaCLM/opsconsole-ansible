@@ -17,15 +17,10 @@
 ---
 # Stop
 
-- name: OPS-WEB | Stop | Disable Ops Console virtual host (hlinux)
-  command: a2dissite "{{ ops_console_site_name }}"
-  when: ansible_os_family == 'Debian'
-
-- name: OPS-WEB | Stop | Disable Ops Console virtual host (SUSE)
+- name: OPS-WEB | Stop | Disable Ops Console virtual host
   file:
     state: absent
     path: "{{ apache2_vhost_dir }}/{{ ops_console_site_name }}.conf"
-  when: ansible_os_family == 'Suse'
 
 - name: OPS-WEB | Stop | Reload apache after disabling Ops Console virtual host
   service:

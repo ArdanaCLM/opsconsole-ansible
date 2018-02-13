@@ -17,22 +17,12 @@
 ---
 # Start
 
-- name: OPS-WEB | Start | Enable Ops Console virtual host (hlinux)
-  command: a2ensite "{{ ops_console_site_name }}"
-  register: ops_console_enable_result
-  changed_when: ( ops_console_enable_result | success ) and
-                ( 'already enabled' not in ops_console_enable_result.stdout )
-  when: ansible_os_family == 'Debian'
-
-- name: OPS-WEB | Start | Enable Ops Console virtual host (SUSE)
-  template:
+- name: OPS-WEB | Start | Enable Ops Console virtual host
+  file:
+    src: "{{ apache2_vhost_dir }}/{{ ops_console_site_name }}.vhost"
     dest: "{{ apache2_vhost_dir }}/{{ ops_console_site_name }}.conf"
-    src: ops-console-apache.conf
-    owner: root
-    group: root
-    mode: 0664
+    state: link
   register: ops_console_enable_result
-  when: ansible_os_family == 'Suse'
 
 - include: "{{ playbook_dir }}/roles/FND-AP2/tasks/start_reload.yml"
   vars:
