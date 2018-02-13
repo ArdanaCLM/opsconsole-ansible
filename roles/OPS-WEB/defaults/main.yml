@@ -47,7 +47,9 @@ ops_console_venv: "{{ 'ops-console-web' | venv_dir }}"
 ops_console_site_packages: "{{ ops_console_venv }}/lib/python2.7/site-packages"
 
 # Opscon UI config
-kibana_vip_url: "{{ LOG_SVR.advertises.vips.admin[0].url }}"
+kibana_vip_url: "{% if LOG_SVR is defined -%}
+                     {{ LOG_SVR.advertises.vips.admin[0].url }}
+                 {%- endif %}"
 
 # Points to Horizon UI
 tenant_console_vip_url: "{% if HZN_WEB is defined -%}
