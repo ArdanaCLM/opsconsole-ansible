@@ -30,6 +30,44 @@
   register: ops_console_mod_enable_result
   changed_when: '"already enabled" not in ops_console_mod_enable_result.stdout'
 
+- name: OPS-WEB | install | Create BLL Group
+  group:
+    name: "{{ ops_console_os_group }}"
+    state: present
+
+- name: OPS-WEB | install | Create BLL User
+  user:
+    name: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_os_group }}"
+    createhome: yes
+    shell: /usr/sbin/nologin
+    state: present
+  ignore_errors: yes
+
+- name: OPS-WEB | install | Create logging directory
+  file:
+    path: "{{ ops_console_log_dir }}"
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_os_group }}"
+    mode: 0775
+    state: directory
+
+- name: OPS-WEB | install | Create Virtual Host Error Logging File
+  file:
+    path: "{{ ops_console_error_log }}"
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_centralized_log_group }}"
+    mode: 0640
+    state: touch
+
+- name: OPS-WEB | install | Create Virtual Host Access Log File
+  file:
+    path: "{{ ops_console_access_log }}"
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_centralized_log_group }}"
+    mode: 0640
+    state: touch
+
 - name: OPS-WEB | install | install the Ops Console service (legacy)
   include: install-server-legacy.yml
   when: deployer_media_legacy_layout|bool
