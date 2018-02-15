@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -17,7 +17,7 @@
 ---
 
 - hosts: OPS-WEB
-  sudo: yes
+  become: yes
   roles:
     - OPS-WEB
   tasks:
@@ -25,14 +25,14 @@
     - include: roles/OPS-WEB/tasks/configure.yml
 
 - hosts: OPS-WEB
-  sudo: yes
+  become: yes
   roles:
     - OPS-WEB
   tasks:
     - include: roles/OPS-WEB/tasks/_post-configure.yml
 
 - hosts: OPS-WEB
-  sudo: yes
+  become: yes
   roles:
     - OPS-WEB
   tasks:
@@ -41,7 +41,7 @@
 # We use the standard ansible ampersand operator to select the
 # intersection of OPS-WEB hosts and MON-AGN hosts.
 - hosts: OPS-WEB:&MON-AGN
-  sudo: yes
+  become: yes
   roles:
     - OPS-WEB
   tasks:

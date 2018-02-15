@@ -19,7 +19,7 @@
 
 # install wsgi Apache module
 - name: OPS-WEB | install | Install dependencies
-  sudo: yes
+  become: yes
   package:
     state: latest
     name: "{{ item }}"
