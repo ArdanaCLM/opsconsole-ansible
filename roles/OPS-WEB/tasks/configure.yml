@@ -36,7 +36,7 @@
 
 - name: OPS-WEB | configure | configure Ops Console Virtual Host
   template:
-   dest: "{{ apache2_vhost_dir }}/{{ ops_console_site_name }}.conf"
+   dest: "{{ apache2_vhost_dir }}/{{ ops_console_site_name }}.vhost"
    src: ops-console-apache.conf
    owner: root
    group: root
