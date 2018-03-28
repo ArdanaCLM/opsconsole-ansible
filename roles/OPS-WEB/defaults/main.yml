@@ -62,7 +62,7 @@ ops_console_schema_path: "{%- if deployer_media_legacy_layout|bool -%}
                           {%- else -%}
                               /usr/share/ardana-opsconsole-server/schema.sql
                           {%- endif -%}"
-ca_file: "/etc/ssl/certs/ca-certificates.crt"
+ca_file: "{{ trusted_ca_bundle }}"
 
 mysql:
   host: >

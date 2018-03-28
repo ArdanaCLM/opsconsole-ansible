@@ -75,7 +75,7 @@ logging = {
 
 keystone = {
     'private_url': '{{ keystone_private_url }}',
-    'cacert': '/etc/ssl/certs/ca-certificates.crt',
+    'cacert': '{{ ca_file }}',
     'service_tenant': '{{ keystone_service_tenant }}',
 }
 
