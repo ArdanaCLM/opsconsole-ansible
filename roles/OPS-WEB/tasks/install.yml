@@ -68,18 +68,10 @@
     mode: 0640
     state: touch
 
-- name: OPS-WEB | install | install the Ops Console service (legacy)
-  include: install-server-legacy.yml
-  when: deployer_media_legacy_layout|bool
-
 # install mysql-client
 - name: OPS-WEB | install | Install dependencies (mysql-client)
   become: yes
   include: "{{ playbook_dir }}/roles/FND-MDB/tasks/install_client.yml"
-
-- name: OPS-WEB | install | install the Ops Console UI (legacy)
-  include: install-ui-legacy.yml
-  when: deployer_media_legacy_layout|bool
 
 - name: OPS-WEB | install | install the Ops Console service and UI (rpm)
   become: yes
@@ -89,7 +81,6 @@
   with_items:
     - python-ardana-opsconsole-server
     - ardana-opsconsole-ui
-  when: deployer_media_legacy_layout|bool == false
 
 - name: OPS-WEB | install | Create WSGI directory
   file:

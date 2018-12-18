@@ -57,11 +57,7 @@ tenant_console_vip_url: "{% if HZN_WEB is defined -%}
                          {%- endif %}"
 
 # Database configuration
-ops_console_schema_path: "{%- if deployer_media_legacy_layout|bool -%}
-                              {{ ops_console_site_packages }}/bll/schema.sql
-                          {%- else -%}
-                              /usr/share/ardana-opsconsole-server/schema.sql
-                          {%- endif -%}"
+ops_console_schema_path: "/usr/share/ardana-opsconsole-server/schema.sql"
 ca_file: "{{ trusted_ca_bundle }}"
 
 mysql:
@@ -93,17 +89,9 @@ is_foundation_installed_env: false
 ops_console_site_name: ops-console
 ops_console_ui_host: "{{ host.bind.OPS_WEB.internal.ip_address }}"
 ops_console_ui_port: "{{ host.bind.OPS_WEB.internal.port }}"
-ops_console_web_root: '{% if deployer_media_legacy_layout|bool -%}
-                           /var/www/{{ ops_console_site_name }}
-                       {%- else -%}
-                           /usr/share/ardana-opsconsole-ui
-                       {%- endif -%}'
+ops_console_web_root: "/usr/share/ardana-opsconsole-ui"
 
-ops_console_wsgi_dir: '{% if deployer_media_legacy_layout|bool -%}
-                           /var/www/{{ ops_console_site_name }}/api
-                       {%- else -%}
-                           /srv/www/{{ ops_console_site_name }}/api
-                       {%- endif -%}'
+ops_console_wsgi_dir: "/srv/www/{{ ops_console_site_name }}/api"
 ops_console_wsgi: "{{ ops_console_wsgi_dir }}/app.wsgi"
 
 ops_console_private_url: "{{ OPS_WEB.advertises.vips.private[0].url }}"
