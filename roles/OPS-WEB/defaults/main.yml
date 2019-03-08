@@ -34,6 +34,7 @@ ops_console_loglevel: "{{ ardana_loglevel | default('INFO') }}"
 ops_console_os_user: opscon
 ops_console_os_group: opscon
 ops_console_centralized_log_group: adm
+ops_console_home_dir: /var/lib/opscon
 
 # Keystone configuration
 keystone_service_tenant: "{{ KEY_API.vars.keystone_service_tenant }}"

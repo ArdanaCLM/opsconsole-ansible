@@ -39,10 +39,21 @@
   user:
     name: "{{ ops_console_os_user }}"
     group: "{{ ops_console_os_group }}"
-    createhome: yes
+    createhome: no
     shell: /usr/sbin/nologin
-    state: present
+    home: "{{ ops_console_home_dir }}"
   ignore_errors: yes
+
+# NOTE: Matching the creation of home dir with opsconsole RPM package
+# python-ardana-opsconsole-server
+- name: OPS-WEB | install | Add user home
+  become: yes
+  file:
+    path: "{{ ops_console_home_dir }}"
+    state: directory
+    owner: "{{ ops_console_os_user }}"
+    group: "{{ ops_console_os_group }}"
+    mode: 0750
 
 - name: OPS-WEB | install | Create logging directory
   file:
