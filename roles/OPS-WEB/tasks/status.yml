@@ -17,12 +17,12 @@
 ---
 - name: OPS-WEB | Status | Get vhost status
   uri:
-    url: "{{ops_console_private_url}}"
+    url: http://{{ ops_console_ui_host }}:{{ ops_console_ui_port }}
     return_content: true
   register: ops_web_content
 
 - name: OPS-WEB | Status | Verify status result
   fail:
     msg: |
-      {{ ops_console_private_url }} did not respond correctly.
+      http://{{ ops_console_ui_host }}:{{ ops_console_ui_port }} did not respond correctly.
   when: ops_web_content.content.find('Operations') == -1
