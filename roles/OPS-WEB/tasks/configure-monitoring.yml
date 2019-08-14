@@ -16,7 +16,7 @@
 #
 ---
 - name: OPS-WEB | configure-monitoring | set fact for apache url
-  set_fact: ops_apache_monitor_url="http://{{ host.bind.OPS_WEB.internal.ip_address }}:{{ host.bind.OPS_WEB.internal.port }}/server-status?auto"
+  set_fact: ops_apache_monitor_url="http://{{ host.bind.OPS_WEB.internal.ip_address | ipwrap }}:{{ host.bind.OPS_WEB.internal.port }}/server-status?auto"
 
 - name: OPS-WEB | configure-monitoring | Monasca - Apache check
   monasca_agent_plugin:
@@ -36,6 +36,6 @@
   monasca_agent_plugin:
     name: "httpcheck"
     args: >
-      url=http://{{ ops_console_ui_host }}:{{ ops_console_ui_port }}/version.json
+      url=http://{{ ops_console_ui_host | ipwrap }}:{{ ops_console_ui_port }}/version.json
       match_pattern=.*commit_date.*
       dimensions=service:ops-console,component:ops-console-web
